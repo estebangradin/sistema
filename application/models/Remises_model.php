@@ -180,6 +180,12 @@ class Remises_model extends CI_Model{
                   );
         $this->db->update('remises', $data, array('ID_REMIS' => $remis));
     }
+     function ApagarBoton($remis){
+     $data = array(
+                   'ESTADO' => 0,
+                  );
+        $this->db->update('remises', $data, array('ID_REMIS' => $remis));
+    }
 	
     function RemiseraCercana($lat , $long){
         $this->db->select('ID_REMISERA, NOMBRE, ( 6371 * ACOS( 

@@ -2,7 +2,6 @@
 $rem = json_encode($remises);
 $chars = array("[", "]");
 //$rem = str_replace($chars, "", $rem);
-echo '<div id="da">'.$rem.'</div>';
 ?>
 <script>
 var auxloc = {}
@@ -30,7 +29,6 @@ var marker, i;
 <div class="col-xs-12">
           <div class="box box-primary">
               <div class="box-header with-border">
-              <h3 class="box-title">Mapa  <input type="button" value="aa" id="dd"></h3>
               </div>
  <div class="box-body table-responsive no-padding">
     <div id="map"></div>
@@ -49,36 +47,6 @@ var marker, i;
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiJHZBjjqtyU3P4pFh48VDznp6d_-lrIE&callback=initMap">
     </script>
 
-<script>
-$("#dd").click(function(){
-
-  var data = '<?= $rem ?>';
-
-
-  $.each(JSON.parse(data), function(idx, obj) {
-    auxloc.LATITUD = parseFloat(obj.LATITUD);
-    auxloc.LONGITUD = parseFloat(obj.LONGITUD);
-    locations.push(auxloc);
-      //locations.push([parseFloat(obj.LATITUD), parseFloat(obj.LONGITUD)]);
-/*
-    if (obj.ESTADO == 1 || obj.ESTADO == 0){
-          marker = new google.maps.Marker({
-          map: map,
-          draggable: true,
-          position: {lat: parseFloat(obj.LATITUD), lng: parseFloat(obj.LONGITUD)},
-          label: {
-          text: '12',
-          textSize:15,
-          },
-          icon: '<?= base_url();?>admlte/marcador.png'
-        });
-        }*/
-  });
-  //alert(locations.length);
-});
-
-//animar animation: google.maps.Animation.BOUNCE,
-</script>
  </div>
  </div>
  </div>
@@ -120,6 +88,11 @@ $("#dd").click(function(){
                           case 2: 
                               echo '<td></td><td><span class="label label-warning">Fuera de servicio</span></td><td></td><td></td><td>
                               <button onclick="servicio(\''.$remis->PATENTE.'\', '.$remis->ID_REMIS.');" class="btn btn-primary">En servicio</button></td>
+                              ';
+                          break;     
+                          case 99: 
+                              echo '<td>'.$remis->NOMBRE.'</td><td><span class="label label-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Boton antipanico activo</span></td><td></td><td></td><td>
+                              <button onclick="ApagarBoton('.$remis->ID_REMIS.');" class="btn btn-primary">Apagar boton antipanico</button></td>
                               ';
                           break;            
                         }
@@ -281,10 +254,17 @@ $("#dd").click(function(){
     </form>
 <audio id="player" src="http://upload.wikimedia.org/wikipedia/commons/f/f2/Median_test.ogg"> </audio>
 <style>
-.ln{
-  font-size: 30px;
-  color: #000000;
-}
+ .labels {
+   color: red;
+   background-color: white;
+   font-family: "Lucida Grande", "Arial", sans-serif;
+   font-size: 10px;
+   font-weight: bold;
+   text-align: center;
+   width: 60px;     
+   border: 2px solid black;
+   white-space: nowrap;
+ }
 </style>
 <script>
 $("document").ready(function(){
@@ -301,103 +281,18 @@ if (refresca){
                   locations = [];
 
                 $.each(JSON.parse(response), function(idx, obj) {
-                // if (obj.ESTADO == 1 || obj.ESTADO == 0 || obj.ESTADO == 99){
-
-                    auxloc = {}
+                     auxloc = {}
                     auxloc.ID_REMIS = obj.ID_REMIS;
                     auxloc.LATITUD = parseFloat(obj.LATITUD);
                     auxloc.LONGITUD = parseFloat(obj.LONGITUD);
                     auxloc.ESTADO = obj.ESTADO;
                     locations.push(auxloc);
-               //  }
+      
                 });
-         /*       var elimina;
-                var  f;
-                var borra; 
-                var id_rem;
-                    if (init != true){
-                for (i = 0; i < locations.length; i++ ) {  
-              
-                    elimina = 1;
-        
-                  for (f = 0; i < marcadores.length; f++ ) {  
-           /*      var output = '';
-for (var property in marcadores[f]) {
-  output += property + ': ' + marcadores[property]+'; ';
-}
-//var mark = marcadores[f].customInfo;
-console.log("rem"+output);*/
-                   //    console.log("rem"+output + " marcadores "+marcadores.length);
-           /*        var mark =  marcadores[f];
-                //  console.log("eee"+marcadores[f].id);
-                console.log("ID= "+mark.id);
-                       id_rem = marcadores[f].id;
-                       console.log('SIGO EJECUTANDO');
-                        if (locations[i].ID_REMIS == id_rem){
-                           elimina = 0;
-                           marcadores[f].setPosition( new google.maps.LatLng(locations[i].LATITUD, locations[i].LONGITUD));  
-                           }else{
-                            borra = f;
-                            elimina = 1;
-
-                            }   
-                          $("#da").html("MARCADORES " + marcadores.length + "<HR> LOCACIONES" + locations.length);
-                          console.log('FIN EJECUTANDO F');
-                  }
-              
-                console.log('SIGO EJECUTANDO I');
-              
-                       if (elimina ==1 ){
-
-                            marcadores[borra].setMap(null);
-                            marcadores.splice(borra, 1);
-                             console.log("rem"+marcadores[f].ID_REMIS + " marcadores "+marcadores.length);
-                
-                     }
-                }
-  }
-                 */
-    /*     ////////////////////////////////////////CODIGO VALIDO//////////////////////////////////////////////////
-                  var elimina;
-                  var  f;
-                  for (i = 0; i < marcadores.length; i++ ) {
-                  elimina = 1;
-        
-                 for (f = 0;  f < locations.length; f++){
-                
-                    if (locations[f].ID_REMIS == marcadores[i].ID){
-                                elimina = 0;
-                                marcadores[i].setPosition( new google.maps.LatLng(locations[f].LATITUD, locations[f].LONGITUD));  
-                    }
-                    } 
-              
-
-                
-                     if (elimina ==1 ){
-                             marcadores[i].setMap(null);
-                          //  marcadores.splice(i, 1);
-                           
-                
-                     }
-                   
-                  }
-
-
-                  if (marcadores.length < locations.length){
-                    $("#da").html("nuevo marcador " + locations.length + ", " + marcadores.length);
-                  }else{
-                      $("#da").html(marcadores.length);
-                  }
-                  ////////////////////////////////////////CODIGO VALIDO//////////////////////////////////////////////////
-                  */
 
               if (init != true){
                 for (i = 0; i < locations.length; i++){
-              //    for (f=0; f<marcadores.length; f++)
                   if (locations[i].ID_REMIS = marcadores[i].id){
-                 //   console.log("coincide en="+i+","+f+" ID_marcador="+marcadores[f].id+"ID_locacion="+locations[i].ID_REMIS);
-             //    console.log(locations[i].ESTADO);
-
                     switch (locations[i].ESTADO){
                       case '0': 
                                 marcadores[i].setPosition( new google.maps.LatLng(locations[i].LATITUD, locations[i].LONGITUD));  
@@ -416,11 +311,7 @@ console.log("rem"+output);*/
                                     marcadores[i].setMap(map);
                                     marcadores[i].setValues({ESTADO: '0'});
                               }
-
                                marcadores[i].setAnimation(null); 
-                              
-        
-                              
                       break;
                       case '99':
                         if (marcadores[i].get('ESTADO') == 'NULL'){
@@ -431,17 +322,12 @@ console.log("rem"+output);*/
                                 marcadores[i].setPosition( new google.maps.LatLng(locations[i].LATITUD, locations[i].LONGITUD));  
                                 marcadores[i].setAnimation(google.maps.Animation.BOUNCE);
                                 marcadores[i].setIcon('<?= base_url();?>admlte/markers/sos.png');
-
-
                       break;
-
                       default:
                                 marcadores[i].setMap(null);
                                 marcadores[i].setValues({ESTADO: 'NULL'});
                                 marcadores[i].setAnimation(null);
-
                     }
-                    
                   }
                 }
               }
@@ -459,16 +345,19 @@ console.log("rem"+output);*/
                     marker = new google.maps.Marker({
                       position: {lat: locations[i].LATITUD, lng: locations[i].LONGITUD},
                       
-                        labelContent: "A",
-                      labelAnchor: new google.maps.Point(3, 30),
-                  labelClass: "labels", // the CSS class for the label
+                          label: {
+        text: 'aaa',
+        color: 'red',
+        fontSize: '20px',
+        x: '200',
+        y: '-100'
+    },
                       icon: '<?= base_url();?>admlte/marcador.png',
                       animation:  anim,
                       id: locations[i].ID_REMIS,
                       map: map
                     });
                     marker.setValues({ESTADO: locations[i].ESTADO});
-                    console.log("aaaaaa"+marker.get('ESTADO'));
                     marcadores.push(marker);
 
                 }
@@ -508,11 +397,7 @@ console.log("rem"+output);*/
         error: function(jqXHR, textStatus, errorThrown) {
            console.log(textStatus, errorThrown);
         }
-
-
     });
-				
-
 				
 				$("#toorigen").html("<STRONG>"+obj.ORIGEN+"</STRONG>");
         $("#toPasajero").html("<STRONG>"+obj.Nombre+ " " + obj.Apellido+"</STRONG>");
@@ -584,5 +469,9 @@ $(".rec").click(function(){
 $(".acp").click(function(){
 	location.href = 'Viajes/Tomar/'+$("#toID_VIAJE").val()+'/'+$("#toid_remis").val();
 });
+function ApagarBoton(id){
+location.href = 'moviles/ApagarBoton/'+id;
+}
+
 </script>
 

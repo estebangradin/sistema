@@ -313,6 +313,12 @@ function sendGCM($id, $acc) {
         $this->Remises_model->Liberar($id);
         redirect('panel');
 	}
+	public function ApagarBoton($id)
+	{
+		$this->load->model('Remises_model');
+        $this->Remises_model->ApagarBoton($id);
+        redirect('panel');
+	}
 	public function Moviles_disponibles(){
 	
 			$this->load->model('Remises_model');
