@@ -1,0 +1,3 @@
+RewriteEngine on
+RewriteCond $1 !^(index\.php|images|bootstrap|build|dist|documentation|plugins|admlte|robots\.txt)
+RewriteRule ^(.*)$ /sistema/index.php/$1 [L]
