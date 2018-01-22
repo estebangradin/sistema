@@ -29,6 +29,11 @@ var marker, i;
 <div class="col-xs-12">
           <div class="box box-primary">
               <div class="box-header with-border">
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
               </div>
  <div class="box-body table-responsive no-padding">
     <div id="map"></div>
@@ -279,15 +284,13 @@ if (refresca){
           data: 'asd' ,
           success: function (response) {
                   locations = [];
-
                 $.each(JSON.parse(response), function(idx, obj) {
-                     auxloc = {}
+                    auxloc = {}
                     auxloc.ID_REMIS = obj.ID_REMIS;
                     auxloc.LATITUD = parseFloat(obj.LATITUD);
                     auxloc.LONGITUD = parseFloat(obj.LONGITUD);
                     auxloc.ESTADO = obj.ESTADO;
                     locations.push(auxloc);
-      
                 });
 
               if (init != true){
@@ -296,7 +299,7 @@ if (refresca){
                     switch (locations[i].ESTADO){
                       case '0': 
                                 marcadores[i].setPosition( new google.maps.LatLng(locations[i].LATITUD, locations[i].LONGITUD));  
-                                marcadores[i].setIcon('<?= base_url();?>admlte/markers/libre.png');
+                                marcadores[i].setIcon('<?= base_url();?>admlte/markers/lib.png');
                                 if (marcadores[i].get('ESTADO') == 'NULL'){
                                 marcadores[i].setMap(map);
                                  marcadores[i].setValues({ESTADO: '0'});
@@ -346,12 +349,13 @@ if (refresca){
                       position: {lat: locations[i].LATITUD, lng: locations[i].LONGITUD},
                       
                           label: {
-        text: 'aaa',
-        color: 'red',
-        fontSize: '20px',
-        x: '200',
-        y: '-100'
-    },
+                                  text: locations[i].ID_REMIS,
+                                  color: 'black',
+                                  fontSize: '15px',
+                                  fontFamily: 'Impact',
+                                  x: '200',
+                                  y: '0'
+                                },
                       icon: '<?= base_url();?>admlte/marcador.png',
                       animation:  anim,
                       id: locations[i].ID_REMIS,
@@ -395,7 +399,7 @@ if (refresca){
   		   });
         },
         error: function(jqXHR, textStatus, errorThrown) {
-           console.log(textStatus, errorThrown);
+        console.log(textStatus, errorThrown);
         }
     });
 				
